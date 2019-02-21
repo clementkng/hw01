@@ -19,12 +19,19 @@ window.builtins = {};
 // ex. builtins.trim('  Horizons  ') -> 'Horizons'
 // ex. builtins.trim('Hello World!    ') -> 'Hello World!'
 
+// TODO: Try using only the for loop rather than adding
 builtins.trim = function(str) {
   let newStr = "";
-  for (let i = 0; i < str.length; i++) {
-    if (str[i] !== " ") {
-      newStr += str[i];
-    }
+  let leading = 0;
+  let trailing = str.length - 1;
+  while (str[leading] === " " && leading < str.length) {
+    leading++;
+  }
+  while (str[trailing] === " " && -1 < trailing) {
+    trailing--;
+  }
+  for (let i = leading; i < trailing + 1; i++) {
+    newStr += str[i];    
   }
   return newStr;
 };
@@ -45,7 +52,7 @@ builtins.trim = function(str) {
 // ex. builtins.search('Horizons', 'h') -> false
 
 builtins.search = function(sourceString, searchString) {
-  if (searchString.indexOf(sourceString)) {
+  if (sourceString.indexOf(searchString) !== -1) {
     return true;
   } else {
     return false;
@@ -65,6 +72,8 @@ builtins.search = function(sourceString, searchString) {
 // ex. builtins.reverse([123]) -> [123]
 
 builtins.reverse = function(arr) {
-  let next = arr.unshift();
+  let next = arr.shift();
+  if (next === undefined) 
+    return arr;
   return builtins.reverse(arr).concat(next);
 };
